@@ -14,15 +14,14 @@ profileID = '[id]'
 profileNum = '[64]'
 
 for comment in subreddit.stream.comments():
-    saver = reddit.comment(id=comment.id)
-    if saver not in reddit.redditor('Your bots name here').saved():
+    if not comment.saved():
         if profileID in comment.body:
             word = comment.body.replace(profileID, '')
             try:
                 rUser = user.SteamUser(userurl=word)
                 comment.reply('Name|Steam 64|URL|Has Vac?|Level|Current XP\n-|-|-|-|-|-\n'+rUser.name+'|'+str(rUser.steamid)+'|'+rUser.profile_url+'|'+str(rUser.is_vac_banned)+'|'+str(rUser.level)+'|'+str(rUser.xp))
                 print('User: ' + str(rUser.steamid))
-                saver.save()
+                comment.save()
             except Exception as e:
                 print(e)
         if profileNum in comment.body:
@@ -31,7 +30,7 @@ for comment in subreddit.stream.comments():
                 rUser = user.SteamUser(userid=word)
                 comment.reply('Name|Steam 64|URL|Has Vac?|Level|Current XP\n-|-|-|-|-|-\n'+rUser.name+'|'+str(rUser.steamid)+'|'+rUser.profile_url+'|'+str(rUser.is_vac_banned)+'|'+str(rUser.level)+'|'+str(rUser.xp))
                 print('User: ' + str(rUser.steamid))
-                saver.save()
+                comment.save()
             except Exception as e:
                 print(e)
     else:
